@@ -8,7 +8,7 @@
 spyderlib.qt.compat
 -------------------
 
-Transitional module providing compatibility functions intended to help 
+Transitional module providing compatibility functions intended to help
 migrating from PyQt to PySide.
 
 This module should be fully compatible with:
@@ -35,13 +35,14 @@ PYQT_API_1 = False
 if os.environ['QT_API'] == 'pyqt':
     import sip
     try:
-        PYQT_API_1 = sip.getapi('QVariant') == 1 # PyQt API #1
+        PYQT_API_1 = sip.getapi('QVariant') == 1  # PyQt API #1
     except AttributeError:
         # PyQt <v4.6
         PYQT_API_1 = True
+
     def to_qvariant(pyobj=None):
         """Convert Python object to QVariant
-        This is a transitional function from PyQt API #1 (QVariant exist) 
+        This is a transitional function from PyQt API #1 (QVariant exist)
         to PyQt API #2 and Pyside (QVariant does not exist)"""
         if PYQT_API_1:
             # PyQt API #1
@@ -50,9 +51,10 @@ if os.environ['QT_API'] == 'pyqt':
         else:
             # PyQt API #2
             return pyobj
+
     def from_qvariant(qobj=None, convfunc=None):
         """Convert QVariant object to Python object
-        This is a transitional function from PyQt API #1 (QVariant exist) 
+        This is a transitional function from PyQt API #1 (QVariant exist)
         to PyQt API #2 and Pyside (QVariant does not exist)"""
         if PYQT_API_1:
             # PyQt API #1
@@ -73,18 +75,19 @@ if os.environ['QT_API'] == 'pyqt':
 else:
     def to_qvariant(obj=None):  # analysis:ignore
         """Convert Python object to QVariant
-        This is a transitional function from PyQt API#1 (QVariant exist) 
+        This is a transitional function from PyQt API#1 (QVariant exist)
         to PyQt API#2 and Pyside (QVariant does not exist)"""
         return obj
     def from_qvariant(qobj=None, pytype=None):  # analysis:ignore
         """Convert QVariant object to Python object
-        This is a transitional function from PyQt API #1 (QVariant exist) 
+        This is a transitional function from PyQt API #1 (QVariant exist)
         to PyQt API #2 and Pyside (QVariant does not exist)"""
         return qobj
 
 #==============================================================================
 # Wrappers around QFileDialog static methods
 #==============================================================================
+
 
 def getexistingdirectory(parent=None, caption='', basedir='',
                          options=QFileDialog.ShowDirsOnly):
@@ -107,6 +110,7 @@ def getexistingdirectory(parent=None, caption='', basedir='',
         result = to_text_string(result)
     return result
 
+
 def _qfiledialog_wrapper(attr, parent=None, caption='', basedir='',
                          filters='', selectedfilter='', options=None):
     if options is None:
@@ -127,7 +131,7 @@ def _qfiledialog_wrapper(attr, parent=None, caption='', basedir='',
         if QString is not None:
             selectedfilter = QString()
             tuple_returned = False
-    
+
     # Calling QFileDialog static method
     if sys.platform == "win32":
         # On Windows platforms: redirect standard outputs
@@ -137,8 +141,8 @@ def _qfiledialog_wrapper(attr, parent=None, caption='', basedir='',
         result = func(parent, caption, basedir,
                       filters, selectedfilter, options)
     except TypeError:
-        # The selectedfilter option (`initialFilter` in Qt) has only been 
-        # introduced in Jan. 2010 for PyQt v4.7, that's why we handle here 
+        # The selectedfilter option (`initialFilter` in Qt) has only been
+        # introduced in Jan. 2010 for PyQt v4.7, that's why we handle here
         # the TypeError exception which will be raised with PyQt v4.6
         # (see Issue 960 for more details)
         result = func(parent, caption, basedir, filters, options)
@@ -146,7 +150,7 @@ def _qfiledialog_wrapper(attr, parent=None, caption='', basedir='',
         if sys.platform == "win32":
             # On Windows platforms: restore standard outputs
             sys.stdout, sys.stderr = _temp1, _temp2
-            
+
     # Processing output
     if tuple_returned:
         # PySide or PyQt >=v4.6
@@ -163,9 +167,10 @@ def _qfiledialog_wrapper(attr, parent=None, caption='', basedir='',
         else:
             # List of filenames
             output = [to_text_string(fname) for fname in output]
-            
+
     # Always returns the tuple (output, selectedfilter)
     return output, selectedfilter
+
 
 def getopenfilename(parent=None, caption='', basedir='', filters='',
                     selectedfilter='', options=None):
@@ -178,6 +183,7 @@ def getopenfilename(parent=None, caption='', basedir='', filters='',
                                 filters=filters, selectedfilter=selectedfilter,
                                 options=options)
 
+
 def getopenfilenames(parent=None, caption='', basedir='', filters='',
                      selectedfilter='', options=None):
     """Wrapper around QtGui.QFileDialog.getOpenFileNames static method
@@ -188,6 +194,7 @@ def getopenfilenames(parent=None, caption='', basedir='', filters='',
                                 caption=caption, basedir=basedir,
                                 filters=filters, selectedfilter=selectedfilter,
                                 options=options)
+
 
 def getsavefilename(parent=None, caption='', basedir='', filters='',
                     selectedfilter='', options=None):
