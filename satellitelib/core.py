@@ -314,13 +314,49 @@ class MainWin(QtGui.QMainWindow):
                                         experiment_list=tuple(droplet_list))
 
     def show_about(self):
-        about_str = ("Satellite\n\nversion:" + satellitelib.__version__ +
-                     "\n\nCopyright (c) 2013 David Tremouilles\n\n")
-        about_str = (about_str + "Satellite is software dedicated to " +
-                     "view and analysis TLP measurements,")
-        about_str = (about_str + "for further information please go on " +
-                     "http://code.google.com/p/esdanalysistools/")
-        QtGui.QMessageBox.about(self, "About Satellite", about_str)
+        import platform
+        import thunderstorm
+        from . import __version__
+        from . import qt
+
+        versions = {'satellite': __version__,
+                    'thunderstorm': thunderstorm.__version__,
+                    'python': platform.python_version(),  # "2.7.3"
+                    'bitness': platform.architecture()[0],  # 64bits
+                    'system': platform.system(),   # Linux, Windows, ...
+                    'qt': qt.QtCore.__version__,
+                    'qt_api': qt.API_NAME,      # PySide or PyQt4
+                    'qt_api_ver': qt.__version__,
+                    }
+
+        QtGui.QMessageBox.about(
+            self,
+            "About Satellite",
+            """<a href="http://esdanalysistools.github.io/Satellite/">
+            <b>Satellite {satellite}</b></a>
+            <p>  Copyright &copy; 2013 ESDAnalysisTools Development Team
+            <br/>Licensed under the terms of the MIT License
+            </p>
+            <p>Satellite is a software dedicated to
+            visualisation and analysis of TLP measurements.
+            </p>
+            <p>  Created by David Tr&eacute;mouilles
+            <br/>Developed and maintained by the
+            <br/><a href="https://github.com/ESDAnalysisTools?tab=members">
+                 ESDAnalysisTools Development Team</a>
+            <br/>Many thanks to all Satellite beta-testers and regular users.
+            <p>Data analysis and visualisation is powered by
+            <a href="http://esdanalysistools.github.com/ThunderStorm/">
+            <b>Thunderstorm {thunderstorm}</b></a>
+            </p><a href="https://github.com/ESDAnalysisTools/Satellite/issues">
+            Bug reports and feature requests.</a>
+            <p>
+            </p>
+            <p>Python {python} ({bitness})
+            <br/>Qt {qt}, {qt_api} {qt_api_ver}
+            <br/>on {system}
+            </p>
+            """.format(**versions))
 
 
 def _init_logging():
