@@ -32,7 +32,7 @@ from satellitelib import __version__
 
 setup(name='Satellite',
       version=__version__,
-      author='David Trémouilles',
+      author='ESDAnalysisTools Development Team',
       author_email='david.trem at gmail.com',
       url='http://code.google.com/p/esdanalysistools/',
       license='MIT',
