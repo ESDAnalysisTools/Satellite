@@ -30,7 +30,7 @@ from .qt import QtGui
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg,
-    NavigationToolbar2QTAgg as NavigationToolbar)
+    NavigationToolbar2QT as NavigationToolbar)
 
 from thunderstorm.lightning.simple_plots import TLPFigure
 from thunderstorm.lightning.simple_plots import TLPOverlayWithLeakEvol
