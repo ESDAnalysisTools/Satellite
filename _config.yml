@@ -1,0 +1,8 @@
+title: Satellite
+description: A GUI for thunderstorm (under MIT license)
+google_analytics: UA-34845476-1
+show_downloads: true
+theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
